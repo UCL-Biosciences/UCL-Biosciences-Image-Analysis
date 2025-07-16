@@ -39,3 +39,9 @@ We will generate resources for common analysis steps e.g. segmentation (2D and 3
 
 ## Datasets
 We will use a combination of [publicly available benchmark datasets](https://bbbc.broadinstitute.org/image_sets) and data generated within Biosciences to test and demonstrate pipelines.
+
+## Collaboration
+Working together
+
+## Impact
+Others can use it
