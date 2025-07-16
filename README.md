@@ -33,3 +33,9 @@ Job scripts for running analyses on HPC clusters, again with minimal coding expe
 
 ### Data Publishing
 Demo of how to upload to archives, how to generate Zenodo DOI, what is needed for reproducibility (annotated code, environments etc).
+
+## Image Analysis
+We will generate resources for common analysis steps e.g. segmentation (2D and 3D), counting cells/nuclei, shape/size analysis, quantifying light intensity.
+
+## Datasets
+We will use a combination of [publicly available benchmark datasets](https://bbbc.broadinstitute.org/image_sets) and data generated within Biosciences to test and demonstrate pipelines.
