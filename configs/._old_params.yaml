@@ -1,0 +1,15 @@
+# config/params.yaml
+folder: "/home/ucsagil/Scratch/image-analysis/Fluo-N2DH-GOWT1/01"
+output_dir: "/home/ucsagil/Scratch/image-analysis/cellpose-segmentation-demo/output"
+testing: true
+frame_subset: false
+subset_frame_number: 2
+downsize_size: [100, 100]
+channels: [0, 0]
+diameter: null  # null means auto-estimate
+max_frames: 4
+tracking_search_range: 10
+tracking_memory: 2
+use_gpu: false
+validate_sample_fraction: 0.05
+validate_min_samples: 5

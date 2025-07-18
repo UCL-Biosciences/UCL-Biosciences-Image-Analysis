@@ -1,0 +1,36 @@
+# =========================================
+# IMAGE SEGMENTATION PIPELINE CONFIGURATION
+# =========================================
+
+# --------------------
+# INPUT SETTINGS
+# --------------------
+folder: "/home/ucsagil/Scratch/image-analysis/Fluo-N2DH-GOWT1/01"                       # Directory containing TIFF image frames
+output_dir: "/home/ucsagil/Scratch/image-analysis/cellpose-segmentation-demo/output"    # Directory where all outputs will be saved
+
+# --------------------
+# TESTING MODE
+# --------------------
+testing: true                     # If true, images will be downsampled for faster processing
+downsize_size: [100, 100]         # Size (height, width) for downsampling during testing mode
+frame_subset: true               # If true, use only the first n frames. Number defined below:
+subset_frame_number: 2            # How many frames to use - useful if you want to test the code on a limited number of frames
+
+# --------------------
+# SEGMENTATION SETTINGS
+# --------------------
+channels: [0, 0]                   # Channel configuration for Cellpose: [cytoplasm, nuclei]
+diameter: null                     # Expected cell diameter in pixels (null = auto-estimate from sample)
+
+# --------------------
+# VALIDATION SETTINGS
+# --------------------
+validate_sample_fraction: 0.05     # Fraction of frames to sample for QC images and ROI table
+validate_min_samples: 5            # Minimum number of frames to validate (useful for small datasets)
+validate_random_seed: 42           # Seed for reproducibility when selecting QC frames
+
+# --------------------
+# ADVANCED (OPTIONAL)
+# --------------------
+# pixel_size_um: null              # Optional: pixel size in micrometers for physical size calculations
+gpu: false                       # If you have an NVIDIA GPU, set to true to enable GPU acceleration
