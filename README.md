@@ -25,7 +25,8 @@ cellpose-segmentation-demo/
 Clone the repository:
 
 git clone <your-repo-url>
-cd image_tracking_project
+
+cd image-segmentation-cellpose-demo
 
 Set up environment:
 
