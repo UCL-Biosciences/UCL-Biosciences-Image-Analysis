@@ -5,7 +5,9 @@ A modular pipeline for segmenting time-lapse microscopy images using Cellpose an
 ## Project Structure
 
 cellpose-segmentation-demo/
+
 ├── config/              # Configuration files
+
 │   └── params.yaml      # Main parameter settings
 ├── notebooks/           # Jupyter notebooks for development
 ├── scripts/             # Core Python modules (segmentation, validation, etc.)
