@@ -5,7 +5,7 @@
 # --------------------
 # INPUT SETTINGS
 # --------------------
-folder: "/home/ucsagil/Scratch/image-analysis/Fluo-N2DH-GOWT1/01"                       # Directory containing TIFF image frames
+image_folder: "/home/ucsagil/Scratch/image-analysis/Fluo-N2DH-GOWT1/01"                       # Directory containing TIFF image frames
 output_dir: "/home/ucsagil/Scratch/image-analysis/cellpose-segmentation-demo/output"    # Directory where all outputs will be saved
 
 # --------------------
@@ -13,7 +13,7 @@ output_dir: "/home/ucsagil/Scratch/image-analysis/cellpose-segmentation-demo/out
 # --------------------
 testing: true                     # If true, images will be downsampled for faster processing
 downsize_size: [100, 100]         # Size (height, width) for downsampling during testing mode
-frame_subset: true               # If true, use only the first n frames. Number defined below:
+frame_subset: false               # If true, use only the first n frames. Number defined below:
 subset_frame_number: 2            # How many frames to use - useful if you want to test the code on a limited number of frames
 
 # --------------------
