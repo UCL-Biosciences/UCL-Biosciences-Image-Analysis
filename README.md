@@ -1,4 +1,4 @@
-# Image Segmentation With Cellpose
+# Image Segmentation With Cellpose-SAM
 
 A modular pipeline for segmenting time-lapse microscopy images using Cellpose and validating segmentation quality.
 
