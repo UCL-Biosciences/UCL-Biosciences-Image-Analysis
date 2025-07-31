@@ -43,7 +43,24 @@ We will use a combination of [publicly available benchmark datasets](https://bbb
 By running on different datasets, we will generate recommendations for a range of challenges and problems. Important as tutorials often only run on a single, simple test dataset.
 
 ## Collaboration
-Working together
+We happily will have a team of people working on this project. It would be good for all contributors to read [this tutorial](https://vickysteeves.gitlab.io/collaborating-with-git/collaborating-with-git.html) before starting.
+
+### Branches
+The repo has a few branches to be aware of:
+- `Main` is for recording key info about the project. No code on here yet.
+- `image-segmentation-cellpose-demo` contains an example of how these projects might look for segmenting 2D data. See the notebook in `notebooks` for example of how a guide might look. `scripts` contains all the functions used in the notebook. `jobs` contains a script (`run_segmentation.sh`) that will submit the same work to myriad via a `main.py` script.
+- I think Lada will start a new branch for her work - adding an issue now.
+
+### Some important tips
+- Clone the repository and make the conda environments first.
+- We will organise tasks in the Issues tab. Share updates and questions there. Assign tasks to yourself if you are working on something.
+- Don't commit directly to any of the branches above. These will be kept "clean" i.e. only include code that works.
+- Make a new branch for any work you are doing. Be careful to branch _from_ the branch you want to work on.
+- Keep branches focussed - one feature per branch. e.g. "adding myriad script". Try to only edit code relevant to the aim of the branch.
+- Make your changes, check it all runs, push back to the dedicated branch on the repo, and open a Pull Request to merge with the relevant branch.
+- Pull regularly to stay up to date
+- Write clear messages so everyone can see what changes you've made
+
 
 ## Impact
 Others can use it
