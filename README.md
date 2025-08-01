@@ -27,33 +27,7 @@ The project can be further extended by following the branching logic outlined be
 ## Project structure
 This branch has the following structure:
 
-Image-Analysis-Summer-Project/
-├── notebooks/  # Interactive tuning/testing notebooks
-│ └── prototype_3d_pipeline.ipynb
-│
-├── scripts/  # Core functions (input/output, segmentation, quantification, config, etc.)
-│ ├── io_utils.py
-│ ├── segmentation.py
-│ ├── quantification.py
-│ └── config_handler.py
-│
-├── configs/  # YAML config files (could also be exported from notebook)
-│ └── example_config.yaml
-│
-├── jobs/ # HPC execution scripts
-│ ├── run_pipeline_3d.sh
-│ └── main.py
-│
-├── outputs/  # Results obtained from the notebook
-│   ├── example_quantification.csv
-│   └── example_mask.tiff
-│
-├── inputs/  # example dataset used
-│   └── example_images/
-│
-├── project_plan_workflow.jpg  # Diagram showing full project workflow
-├── image.png  # Branching logic table
-└── requirements.txt  # Conda environment
+<pre lang="text"><code> Image-Analysis-Summer-Project/ ├── notebooks/ # Interactive tuning/testing notebooks │ └── prototype_3d_pipeline.ipynb ├── scripts/ # Core functions (I/O, segmentation, quantification, config, etc.) │ ├── io_utils.py │ ├── segmentation.py │ ├── quantification.py │ └── config_handler.py ├── configs/ # YAML config files (also exportable from notebook) │ └── example_config.yaml ├── jobs/ # HPC execution scripts │ ├── run_pipeline_3d.sh │ └── main.py ├── outputs/ # Results obtained from the notebook │ ├── example_quantification.csv │ └── example_mask.tiff ├── inputs/ # Example dataset used │ └── example_images/ ├── project_plan_workflow.jpg # Diagram showing full project workflow ├── image.png # Branching logic table └── requirements.txt # Conda environment </code></pre>
 
 The interactive notebook in `notebooks` should serve as a user-friendly tool to tune and validate a small subset of the data.
 `scripts` contains all the functions used in the notebook, as well as in the python scipt (`main.py`) to run the job array on HPC. 
