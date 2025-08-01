@@ -1,71 +1,74 @@
 # Image-Analysis-Summer-Project
-Repo for hosting key info for the summer placement: plan, resources, progress, outputs
 
-## Background
-Analysing bioimage data is becoming increasingly complex. File sizes, the number of images and samples, and complex algorithms require specialised knowledge.
+This project aims to develop a flexible, modular, and user-friendly image analysis pipeline for biological microscopy data, with a focus of this branch on 3D confocal images (e.g. .tiff stacks). The workflow supports segmentation, quantification, and potential future downstream analyses such as colocalisation, all first tunable via interactive notebooks and then scalable for batch processing on HPC.
 
-Resources are required to support researchers handling complex datasets and analysis techniques.
+## Planned workflow
 
-In particular, many efficient and reproducible workflows are implemented in coding languages, such as python, which can be a barrier for researchers without coding experience.
+### Core workflow:
+1. **Interactive image loading** and visualisation via Napari (?).
+2. **3D segmentation** using tools like Cellpose, StarDist, or other methods.
+3. **Quantification** of structures (volume, intensity, position, etc.).
+4. Optional **finer scale segmentation** (e.g. for vesicles inside cells).
+5. Export results and configuration for HPC batch processing.
 
-Through this project, we will develop resources to help researchers run python-based image analysis workflows.
+![Image analysis workflow plan](project_plan_workflow.jpg)
 
-## A reproducible workflow
-Our resources will demonstrate a robust and reproducible workflow, from data generation to data publishing. This covers three main themes:
-1. Data management - store and transfer data securely
-2. Data analysis - robust and reproducible analyses
-3. Data publishing - promote FAIR principles through good practice when publishing results
+- Users explore a notebook-based interface to test segmentation and tune parameters on a small image subset
+- Configs (parameters) are automatically exported to a structured .yaml file and saved at `configs` with a new name.
+- A Python script (main.py) uses this config to process larger batches on the HPC
+- All modules (notebook, HPC jobs) share the same core functions from `scripts` to ensure consistency
 
-![Computational support for image analysis](Imaging-plan-20250716.svg)
+## Branching logic
+The project can be further extended by following the branching logic outlined below. All additions should be modular and easily integrable into the existing framework.
 
-### Data Management
-Transfer data and confirm with md5
-Store on RDSS
-
-### Data Analysis
-Use scripting approach to generate repeatable, reproducible workflows.
-
-Configure workflows without needing to change code. I.e. through config files. Make it accessible to non-coders.
-
-Validate pipeline outputs by using test datasets with expected results.
-
-Job scripts for running analyses on HPC clusters, again with minimal coding experience needed.
-
-### Data Publishing
-Demo of how to upload to archives, how to generate Zenodo DOI, what is needed for reproducibility (annotated code, environments etc).
-
-## Image Analysis
-We will generate resources for common analysis steps e.g. segmentation (2D and 3D), counting cells/nuclei, shape/size analysis, quantifying light intensity.
-
-## Datasets
-We will use a combination of [publicly available benchmark datasets](https://bbbc.broadinstitute.org/image_sets) and data generated within Biosciences to test and demonstrate pipelines.
-
-There are a range of datasets on there, including [3D datasets](https://bbbc.broadinstitute.org/search/3D?) that look quite friendly ([e.g.](https://bbbc.broadinstitute.org/BBBC050). Please be clear about where data are downloaded from so others can reproduce the work. 
-
-By running on different datasets, we will generate recommendations for a range of challenges and problems. Important as tutorials often only run on a single, simple test dataset.
-
-## Collaboration
-We happily will have a team of people working on this project. It would be good for all contributors to read [this tutorial](https://vickysteeves.gitlab.io/collaborating-with-git/collaborating-with-git.html) before starting.
-
-### Environments
-To make sure we can all run the same code on our own machines, we will use [conda environments](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html#managing-python). Once you have made an env and installed packages, export the list of packages with `conda env export --no-builds > requirements.txt`. This means anyone can recreate the envirornment with `conda env create -f requirements.txt` and we can all work happily and reproucibly! 
-
-### Branches
-The repo has a few branches to be aware of:
-- `Main` is for recording key info about the project. No code on here yet.
-- `image-segmentation-cellpose-demo` contains an example of how these projects might look for segmenting 2D data. See the notebook in `notebooks` for example of how a guide might look. `scripts` contains all the functions used in the notebook. `jobs` contains a script (`run_segmentation.sh`) that will submit the same work to myriad via a `main.py` script.
-- I think Lada will start a new branch for her work - adding an issue now.
-
-### Some important tips
-- Clone the repository and make the conda environments first.
-- We will organise tasks in the Issues tab. Share updates and questions there. Assign tasks to yourself if you are working on something.
-- Don't commit directly to any of the branches above. These will be kept "clean" i.e. only include code that works.
-- Make a new branch for any work you are doing. Be careful to branch _from_ the branch you want to work on.
-- Keep branches focussed - one feature per branch. e.g. "adding myriad script". Try to only edit code relevant to the aim of the branch.
-- Make your changes, check it all runs, push back to the dedicated branch on the repo, and open a Pull Request to merge with the relevant branch.
-- Pull regularly to stay up to date
-- Write clear messages so everyone can see what changes you've made
+![Branching logic table](image.png)
 
 
-## Impact
-Others can use it
+## Project structure
+This branch has the following structure:
+
+Image-Analysis-Summer-Project/
+├── notebooks/  # Interactive tuning/testing notebooks
+│ └── prototype_3d_pipeline.ipynb
+│
+├── scripts/  # Core functions (input/output, segmentation, quantification, config, etc.)
+│ ├── io_utils.py
+│ ├── segmentation.py
+│ ├── quantification.py
+│ └── config_handler.py
+│
+├── configs/  # YAML config files (could also be exported from notebook)
+│ └── example_config.yaml
+│
+├── jobs/ # HPC execution scripts
+│ ├── run_pipeline_3d.sh
+│ └── main.py
+│
+├── outputs/  # Results obtained from the notebook
+│   ├── example_quantification.csv
+│   └── example_mask.tiff
+│
+├── inputs/  # example dataset used
+│   └── example_images/
+│
+├── project_plan_workflow.jpg  # Diagram showing full project workflow
+├── image.png  # Branching logic table
+└── requirements.txt  # Conda environment
+
+The interactive notebook in `notebooks` should serve as a user-friendly tool to tune and validate a small subset of the data.
+`scripts` contains all the functions used in the notebook, as well as in the python scipt (`main.py`) to run the job array on HPC. 
+`jobs` contains a script (`run_pipeline_3d.sh`) that will submit the same work to Myriad via a `main.py` script.
+`configs` contains a template of the configuration file with parameters that could be adjusted and saved through an interactive notebook.
+
+
+### Datasets
+We will use a combination of [publicly available benchmark datasets](https://bbbc.broadinstitute.org/image_sets) and data generated within Biosciences to test and demonstrate pipelines. 
+
+There are a range of datasets on there, including [3D datasets](https://bbbc.broadinstitute.org/search/3D?) that look quite friendly ([e.g.](https://bbbc.broadinstitute.org/BBBC050). *Dataset will be specified in the /input/example_images/ folder*
+
+### Requirements
+[conda environments](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html#managing-python). Once you have made an env and installed packages, export the list of packages with `conda env export --no-builds > requirements.txt`. This means anyone can recreate the envirornment with `conda env create -f requirements.txt` 
+
+
+## Quick start
+To be completed — instructions for setting up the environment, running the notebook, and launching jobs on HPC
