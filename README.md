@@ -49,9 +49,10 @@ Image-Analysis-Summer-Project/
 ├── project_plan_workflow.jpg    # Diagram showing full project workflow
 ├── image.png                    # Branching logic table
 └── requirements.txt             # Conda environment
+```
 
 The interactive notebook in `notebooks` should serve as a user-friendly tool to tune and validate a small subset of the data.
-`scripts` contains all the functions used in the notebook, as well as in the python scipt (`main.py`) to run the job array on HPC. 
+`scripts` contains all the functions used in the notebook, as well as in the Python script (`main.py`) to run the job array on HPC. 
 `jobs` contains a script (`run_pipeline_3d.sh`) that will submit the same work to Myriad via a `main.py` script.
 `configs` contains a template of the configuration file with parameters that could be adjusted and saved through an interactive notebook.
 
