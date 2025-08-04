@@ -1,0 +1,5 @@
+Brief overview of data used to perform segmentation:
+
+1. Simulated HL60 cells (from the Cell Tracking Challenge) - https://bbbc.broadinstitute.org/BBBC035
+  Data has ground truth annotation as foreground
+
