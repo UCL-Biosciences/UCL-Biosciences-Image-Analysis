@@ -6,40 +6,62 @@ A modular pipeline for segmenting time-lapse microscopy images using Cellpose an
 
 cellpose-segmentation-demo/
 
+```
 ├── config/              # Configuration files
-
 │   └── params.yaml      # Main parameter settings
 ├── notebooks/           # Jupyter notebooks for development
 ├── scripts/             # Core Python modules (segmentation, validation, etc.)
 ├── jobs/                # HPC batch scripts
 └── output/              # Generated outputs (ignored by Git)
-
+```
 ## Requirements
 
 - Python 3.8+
 - conda
 - configs/celltrack-env-myriad.yml
 
-## Quick Start
+## Setup and Usage
+### Clone the Repository & Set Up (Locally or via VSC)
+1. Open Visual Studio Code on your local machine or via remote SSH to Myriad.
+2. Clone the project repository into your workspace:
 
-Clone the repository:
+```
+git clone git@github.com:jdgilbert245/Image-Analysis-Summer-Project.git
+cd your-project
+git checkout image-segmentation-cellpose-demo # move to this branch of the repository
+```
+3. Load Conda module (example for Myriad):
 
-git clone <your-repo-url>
+```
+module load python/miniconda3
+source $UCL_CONDA_PATH/etc/profile.d/conda.sh
+```
+4. Create the environment from the YAML file:
 
-cd image-segmentation-cellpose-demo
+`conda env create -f config/celltrack-env-myriad.yml`
 
-Set up environment:
+5. Activate the environment:
 
-conda create -n cellpose_env python=3.9
-conda activate cellpose_env
-pip install cellpose
-pip install -r requirements.txt  # (optional)
+`conda activate celltrack-env-myriad`
 
-Edit configuration:
+6. Register the environment as a Jupyter kernel:
 
-Update config/params.yaml with your image folder and settings.
+`python -m ipykernel install --user --name=celltrack-env-myriad`
 
-Run pipeline:
+### Run the Notebook on Myriad via Open Ondemand
 
-python main.py --config config/params.yaml
+1. Go to Myriad's [Open OnDemand service](https://www.rc.ucl.ac.uk/docs/Supplementary/OnDemand/) and start a Jupyter notebook session. 1 CPU and 32GB RAM should be enough to work through the notebook.
+2. Once the session starts, open `notebooks/cellpose-segmentation.ipynb`. In the top right corner, select a kernel that has `celltrack-env-myriad` in the name.
+3. Go through the notebook.
+
+###
+
+
+
+
+
+
+
+
+
 
