@@ -27,7 +27,7 @@ cellpose-segmentation-demo/
 
 ```
 git clone git@github.com:jdgilbert245/Image-Analysis-Summer-Project.git
-cd your-project
+cd Image-Analysis-Summer-Project
 git checkout image-segmentation-cellpose-demo # move to this branch of the repository
 ```
 3. Load Conda module (example for Myriad):
@@ -48,13 +48,34 @@ source $UCL_CONDA_PATH/etc/profile.d/conda.sh
 
 `python -m ipykernel install --user --name=celltrack-env-myriad`
 
+### Download the data
+There is plenty of data on the [Broad Bioimage Benchmark Collection website](https://bbbc.broadinstitute.org/). You could e.g.
+
+```
+mkdir -p input_data
+cd input_data
+wget https://data.broadinstitute.org/bbbc/BBBC035/BBBC035_v1_dataset.zip
+unzip BBBC035_v1_dataset.zip -d raw/
+rm BBBC035_v1_dataset.zip
+```
+This will extract the dataset into the data/raw/ folder, ready for segmentation. You will need to check they are in the expected format and confirm the paths are correct in the Jupyter notebooks and corresponding config files.
+
+### Controlling settings with a configuration file
+There is a config file in `config/params.yaml` that defines the parameters for the Cellpose image segmentation pipeline, including input/output paths, testing options, segmentation settings, and validation controls.
+
+- Input settings specify the source directory of TIFF image frames and the output folder for saving results.
+- Testing mode allows downsampling and frame subsetting to quickly test the pipeline on a small portion of the dataset.
+- Segmentation settings include Cellpose channel configuration and optional diameter hints for cell size.
+- Validation settings define how many images are randomly sampled for quality control (QC) visualisations and ROI tables.
+- Advanced options include optional GPU acceleration and pixel size calibration.
+
+This modular structure allows easy switching between full-scale analysis and quick testing, making it ideal for reproducible and configurable segmentation workflows.
+
 ### Run the Notebook on Myriad via Open Ondemand
 
 1. Go to Myriad's [Open OnDemand service](https://www.rc.ucl.ac.uk/docs/Supplementary/OnDemand/) and start a Jupyter notebook session. 1 CPU and 32GB RAM should be enough to work through the notebook.
 2. Once the session starts, open `notebooks/cellpose-segmentation.ipynb`. In the top right corner, select a kernel that has `celltrack-env-myriad` in the name.
 3. Go through the notebook.
-
-###
 
 
 
