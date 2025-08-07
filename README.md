@@ -22,7 +22,7 @@ cellpose-segmentation-demo/
 
 ## Setup and Usage
 ### Clone the Repository & Set Up (Locally or via VSC)
-1. Open Visual Studio Code on your local machine or via remote SSH to Myriad.
+1. Open Visual Studio Code via remote SSH to Myriad.
 2. Clone the project repository into your workspace:
 
 ```
