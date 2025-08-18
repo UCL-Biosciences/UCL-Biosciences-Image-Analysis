@@ -53,7 +53,7 @@ def segment_with_cellpose(img_3d, diameter=None, channels=[0,0], gpu=False):
 
 
 
-def segment_with_stardist(img_3d, model_dir=STARDIST_MODEL_DIR, model_name='3D_demo'):
+def segment_with_stardist(img_3d, model_dir=STARDIST_MODEL_DIR, model_name='3d_demo'):
     """
     Segments 3D image using pre-trained StarDist 3D model.
 
@@ -149,6 +149,6 @@ def save_segmentation_results(volume, mask, output_root, experiment_label, save_
 
         # Save overlay
         overlay_path = experiment_dir / "overlay_MIP.png"
-        plt.imwrite(overlay_path, (mip_overlay * 255).astype(np.uint8))
+        plt.imsave(overlay_path, (mip_overlay * 255).astype(np.uint8))
         plt.close()
         print(f"Saved MIP overlay to {overlay_path}")
