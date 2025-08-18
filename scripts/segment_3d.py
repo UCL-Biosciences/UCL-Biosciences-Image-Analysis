@@ -11,7 +11,7 @@ from skimage.util import img_as_ubyte
 
 from cellpose import models
 from stardist.models import StarDist3D  ### model loaded from the 
-from tifffile import imsave
+from tifffile import imwrite
 
 
 
@@ -124,7 +124,7 @@ def save_segmentation_results(volume, mask, output_root, experiment_label, save_
     # Save full mask stack as uint16
     mask_uint16 = mask.astype(np.uint16)
     mask_path = experiment_dir / "mask.tif"
-    imsave(mask_path, mask_uint16)
+    imwrite(mask_path, mask_uint16)
     print(f"Saved mask stack to {mask_path}")
 
     if save_overlay:
@@ -149,6 +149,6 @@ def save_segmentation_results(volume, mask, output_root, experiment_label, save_
 
         # Save overlay
         overlay_path = experiment_dir / "overlay_MIP.png"
-        plt.imsave(overlay_path, (mip_overlay * 255).astype(np.uint8))
+        plt.imwrite(overlay_path, (mip_overlay * 255).astype(np.uint8))
         plt.close()
         print(f"Saved MIP overlay to {overlay_path}")
