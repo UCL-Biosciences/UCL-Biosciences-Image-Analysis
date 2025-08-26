@@ -73,82 +73,59 @@ def segment_with_stardist(img_3d, model_dir=STARDIST_MODEL_DIR, model_name='3d_d
     return labels
 
 
+### function for segmenting cytoplasm
 
+from skimage.segmentation import watershed
+from skimage.filters import gaussian
+import numpy as np
+from scipy import ndimage as ndi
 
-### segmentation utils
-
-def overlay_segmentation(img, mask, z_slice=None):
-    z = z_slice if z_slice is not None else img.shape[0] // 2  ## uses middle slice by default
-    overlay = label2rgb(mask[z], image=img[z], bg_label=0, alpha=0.4, bg_color=None)
-    
-    plt.figure(figsize=(6, 6))
-    plt.imshow(overlay)
-    plt.title(f"Overlay (Z={z})")
-    plt.axis('off')
-    plt.show()
-
-
-def save_mask_as_tiff(mask, output_path):
+def segment_cytoplasm(nuclei_mask, cyto_channel, mode="membrane", sigma=1.0,
+                      min_signal=0.05, membrane_threshold=0.2):
     """
-    Save 3D mask as a TIFF stack.
-    """
-    tifffile.imwrite(output_path, mask.astype(np.uint16))
-    print(f"Saved segmentation mask to {output_path}")
+    Segment cytoplasm using nuclei as seeds and cytoplasmic/membrane channel as guidance.
 
-
-def save_segmentation_results(volume, mask, output_root, experiment_label, save_overlay=True):
-    """
-    Save segmentation masks and optional overlays.
-    
-    Parameters
+    Parameters:
     ----------
-    volume : np.ndarray
-        Original image stack (Z, Y, X) or (Z, Y, X, C)
-    mask : np.ndarray
-        Segmentation mask (Z, Y, X)
-    output_root : Path or str
-        Folder to save results
-    experiment_label : Path or str
-        Can be full path to original file, or just a string label.
-        The stem (filename without extension) will be used as the folder name.
-    save_overlay : bool
-        Whether to save maximum intensity projection overlay
+    nuclei_mask : ndarray
+        Labeled nuclei segmentation (3D).
+    cyto_channel : ndarray
+        Cytoplasmic or membrane channel (3D).
+    mode : str
+        "membrane" for boundary-based segmentation (membrane marker).
+        "cytoskeleton" for intensity-based segmentation (cytoplasmic marker).
+    sigma : float
+        Gaussian smoothing for the guidance image.
+    min_signal : float
+        Minimum normalized intensity for cytoplasm mask (for intensity mode).
+    membrane_threshold : float
+        Threshold for membrane signal to act as stopping boundary.
+
+    Returns:
+    -------
+    cytoplasm_labels : ndarray
+        Labeled cytoplasm mask.
     """
-    output_root = Path(output_root)
-    experiment_label = Path(experiment_label).stem  # ensures only filename part is used
     
-    # Create experiment directory
-    experiment_dir = output_root / experiment_label
-    experiment_dir.mkdir(parents=True, exist_ok=True)
-
-    # Save full mask stack as uint16
-    mask_uint16 = mask.astype(np.uint16)
-    mask_path = experiment_dir / "mask.tif"
-    imwrite(mask_path, mask_uint16)
-    print(f"Saved mask stack to {mask_path}")
-
-    if save_overlay:
-        # Handle multi-channel case
-        if volume.ndim == 4:
-            mip_raw = np.max(volume[..., 0], axis=0)  # assume channel 0 is raw/nuclei
-        else:
-            mip_raw = np.max(volume, axis=0)  # (Y, X)
-
-        mip_mask = np.max(mask, axis=0)   # (Y, X)
-
-        # Normalize raw MIP to 0–1
-        mip_raw_float = mip_raw.astype(np.float32)
-        mip_raw_float = (mip_raw_float - mip_raw_float.min()) / (
-            mip_raw_float.max() - mip_raw_float.min() + 1e-8
-        )
-
-        # Create RGB overlay
-        mip_overlay = label2rgb(
-            mip_mask, image=mip_raw_float, bg_label=0, alpha=0.4, bg_color=None
-        )
-
-        # Save overlay
-        overlay_path = experiment_dir / "overlay_MIP.png"
-        plt.imsave(overlay_path, (mip_overlay * 255).astype(np.uint8))
-        plt.close()
-        print(f"Saved MIP overlay to {overlay_path}")
+    # normalize channel to 0-1
+    #channel = preprocess_3d_image(cyto_channel, downsize_factor, per_slice=per_slice_norm)
+    
+    # smooth channel
+    smoothed = gaussian(cyto_channel, sigma=sigma)
+    
+    if mode == "membrane":
+        # binary mask of membrane
+        membrane_mask = smoothed > membrane_threshold
+        distance = ndi.distance_transform_edt(~membrane_mask)
+        cytoplasm_labels = watershed(-distance, markers=nuclei_mask, mask=~membrane_mask)
+    
+    elif mode == "intensity":
+        # cytoplasmic regions to include
+        cytoplasm_mask = smoothed > min_signal
+        inverted = -smoothed
+        cytoplasm_labels = watershed(inverted, markers=nuclei_mask, mask=cytoplasm_mask)
+    
+    else:
+        raise ValueError("Invalid mode. Choose 'membrane' or 'intensity'.")
+    
+    return cytoplasm_labels
