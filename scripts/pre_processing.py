@@ -35,6 +35,4 @@ def preprocess_3d_image(img_3d, output_shape=None, per_slice=False):
 
     return img_rescaled
 
-
-
     ### extra: add alternative methods for pre-processing: gaussian, denoising etc.
