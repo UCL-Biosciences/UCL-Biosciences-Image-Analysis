@@ -151,6 +151,6 @@ def gaussian_filter(
         print("[WARN] Edges weakened too much (over-smoothing).")
 
     # print QC, including sigma in voxels, noise drop percentage, and edge ratio
-    print(f"[QC] σvox={sigma_vox}, Noise↓ {noise_drop*100:.1f}%, Edge ratio {grad_after/grad_before:.2f}")
+    print(f"Noise↓ {noise_drop*100:.1f}%, Edge ratio (mean gradident before / mean gradient after) {grad_after/grad_before:.2f}")
 
     return out
