@@ -95,7 +95,7 @@ def save_mask_as_tiff(mask, output_path):
 
 def save_segmentation_results(volume, mask, output_root, experiment_label, save_overlay=True):
     """
-    Save segmentation masks and optional overlays, preserving per-file directories.
+    Save segmentation masks and optional overlays in a flat structure.
 
     Parameters
     ----------
@@ -112,41 +112,35 @@ def save_segmentation_results(volume, mask, output_root, experiment_label, save_
         Whether to save maximum intensity projection overlay
     """
     output_root = Path(output_root)
-    experiment_label = Path(experiment_label).stem  # use only filename stem
+    output_root.mkdir(parents=True, exist_ok=True) # create output directory
 
-    # Create per-experiment directory
-    experiment_dir = output_root / experiment_label
-    experiment_dir.mkdir(parents=True, exist_ok=True)
-
-    # Save the mask stack
+    # save mask stack with experiment label in filename
     mask_uint16 = mask.astype(np.uint16)
-    mask_path = experiment_dir / "mask.tif"
+    mask_path = output_root / f"{experiment_label}_mask.tif"
     imwrite(mask_path, mask_uint16)
     print(f"[INFO] Saved mask stack: {mask_path}")
-
-    # Save MIP overlay if requested
+    
+    # save MIP overlay if requested
     if save_overlay:
-        # Compute MIP of raw volume
-        if volume.ndim == 4:
-            # assume first channel is reference (e.g., nuclei)
+        # compute MIP of raw volume
+        if volume.ndim == 4:  # if multichannel, assume first channel for MIP
             mip_raw = np.max(volume[..., 0], axis=0)
         else:
             mip_raw = np.max(volume, axis=0)
 
         mip_mask = np.max(mask, axis=0)
 
-        # Normalize raw MIP to 0-1
+        # normalize raw MIP for display
         mip_raw_float = mip_raw.astype(np.float32)
         mip_raw_float = (mip_raw_float - mip_raw_float.min()) / (
             mip_raw_float.max() - mip_raw_float.min() + 1e-8
         )
 
-        # Overlay labels on raw MIP
-        mip_overlay = label2rgb(
-            mip_mask, image=mip_raw_float, bg_label=0, alpha=0.4, bg_color=None
-        )
+        # overlay labels on raw MIP
+        mip_overlay = label2rgb(mip_mask, image=mip_raw_float, bg_label=0, alpha=0.4)
 
-        overlay_path = experiment_dir / "overlay_MIP.png"
+        overlay_path = output_root / f"{experiment_label}_overlay_MIP.png"
         plt.imsave(overlay_path, (mip_overlay * 255).astype(np.uint8))
         plt.close()
         print(f"[INFO] Saved MIP overlay: {overlay_path}")
+
