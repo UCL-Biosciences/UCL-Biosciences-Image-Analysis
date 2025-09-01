@@ -4,19 +4,23 @@ from skimage.exposure import rescale_intensity
 from skimage.transform import resize
 
 
-def preprocess_3d_image(img_3d, downsize_factor=None, per_slice=False,
+def preprocess_3d_image(img_3d,
+                        per_slice=False,
+                        resize_isotropic: bool = False,
+                        downsize_factor=None,
                         apply_gaussian_filter = None, gaussian_sigma = None,
                         sigma_um: tuple[float, float, float] | None = None,
                         voxel_size_um: tuple[float, float, float] | None = None,
-                        ram_limit_bytes: int = 2_000_000_000,):
+                        ram_limit_bytes: int = 2_000_000_000):
     """
     Preprocess 3D image: 
     normalise + optional resizing (with shape set up by user - could be used for down-sampling)
 
     Args:
         img_3d: np.ndarray (Z, Y, X)
-        downsize_factor: float, factor to downsize the image by (e.g. 0.5 for half size)
         per_slice: bool, if True normalize each slice separately
+        resize_isotropic: bool, if True resize to isotropic voxel size based on voxel_size_um
+        downsize_factor: float, factor to downsize the image by (e.g. 0.5 for half size)
         apply_gaussian_filter: bool, if True apply gaussian filter
         sigma_um: tuple of float, desired Gaussian sigma in micrometers (Z, Y, X).
         voxel_size_um: tuple of float, physical voxel spacing in micrometers (Z, Y, X). Might be specified in image metadata
@@ -28,39 +32,53 @@ def preprocess_3d_image(img_3d, downsize_factor=None, per_slice=False,
     img_3d = img_3d.astype('float32')
 
     if per_slice:
-        img_rescaled = np.empty_like(img_3d, dtype='float32')
+        img_3d = np.empty_like(img_3d, dtype='float32')
         for z in range(img_3d.shape[0]):
-            img_rescaled[z] = rescale_intensity(img_3d[z], out_range=(0, 1))
+            img_3d[z] = rescale_intensity(img_3d[z], out_range=(0, 1))
     else:
-        img_rescaled = rescale_intensity(img_3d, out_range=(0, 1))
+        img_3d = rescale_intensity(img_3d, out_range=(0, 1))
 
     # Check if all slices have the same shape
-    shapes = [img.shape for img in img_rescaled]
+    shapes = [img.shape for img in img_3d]
     if len(set(shapes)) > 1:
         warnings.warn("Images in stack have different sizes.")
 
-    if downsize_factor is not None:
-        # Resize the image if downsize_factor is provided
-        # first take the first slice to get the shape
-        h, w = img_rescaled[0].shape
-        #  calculate the output shape based on the downsize factor
-        output_shape = [
-            int(round(h * downsize_factor, 0)), # height = Y
-            int(round(w * downsize_factor, 0)) # width = X
-        ]
+    if resize_isotropic: 
+        print( "Resizing to isotropic voxel size...")
+        if voxel_size_um is None:
+            raise ValueError("voxel_size_um must be provided for isotropic resizing.")
+        img_3d = resample_to_isotropic(img_3d, voxel_size_um, order=1)
 
-        # Resize each slice to the output shape
-        # Note: resize function expects (Y, X) shape
-        # np.stack accepts a list of arrays with the same shape
-        img_rescaled = np.stack([
-            # resize each slice to the output shape
-            resize(img_rescaled[z], output_shape, anti_aliasing=True)
-            # by looping through the slices
-            for z in range(img_rescaled.shape[0])
-        ], axis=0)
+    if downsize_factor is not None:
+        print(f"Downsampling XY by factor {downsize_factor}...")
+        if not (0 < downsize_factor <= 1):
+            raise ValueError("downsize_factor must be in (0, 1].")
+
+        downsample_xy(img_3d, downsize_factor, order=1)
+
+    # if downsize_factor is not None:
+    #     # Resize the image if downsize_factor is provided
+    #     # first take the first slice to get the shape
+    #     h, w = img_rescaled[0].shape
+    #     #  calculate the output shape based on the downsize factor
+    #     output_shape = [
+    #         int(round(h * downsize_factor, 0)), # height = Y
+    #         int(round(w * downsize_factor, 0)) # width = X
+    #     ]
+
+    #     # Resize each slice to the output shape
+    #     # Note: resize function expects (Y, X) shape
+    #     # np.stack accepts a list of arrays with the same shape
+    #     img_rescaled = np.stack([
+    #         # resize each slice to the output shape
+    #         resize(img_rescaled[z], output_shape, anti_aliasing=True)
+    #         # by looping through the slices
+    #         for z in range(img_rescaled.shape[0])
+    #     ], axis=0)
 
 
     if apply_gaussian_filter:
+        print("Applying Gaussian filter...")
         # set default sigma if not provided
         if sigma_um is None:
             # warn that gaussian sigma is not provided and will use default
@@ -68,13 +86,10 @@ def preprocess_3d_image(img_3d, downsize_factor=None, per_slice=False,
             sigma_um = (1, 1, 1)
 
         # apply gaussian filter
-        img_rescaled = gaussian_filter(img_rescaled,
+        img_3d = gaussian_filter(img_3d,
                                        sigma_um =sigma_um, voxel_size_um=voxel_size_um, ram_limit_bytes=ram_limit_bytes)
     
-    return img_rescaled
-
-    ### extra: add alternative methods for pre-processing: gaussian, denoising etc.
-
+    return img_3d
 
 def gaussian_filter(
     img: np.ndarray,
@@ -154,3 +169,80 @@ def gaussian_filter(
     print(f"Noise↓ {noise_drop*100:.1f}%, Edge ratio (mean gradident before / mean gradient after) {grad_after/grad_before:.2f}")
 
     return out
+
+
+def resample_to_isotropic(img_3d, voxel_size_um, order=1):
+    """
+    Resample a 3D image to isotropic voxel spacing by scaling axes relative to the smallest voxel size.
+
+    Parameters
+    ----------
+    img_3d : np.ndarray
+        3D input image with shape (Z, Y, X).
+    voxel_size_um : tuple of float
+        Physical voxel size (Z, Y, X) in micrometers.
+    order : int
+        Interpolation order for resizing (1 = bilinear, 3 = bicubic, etc.).
+
+    Returns
+    -------
+    img_iso : np.ndarray
+        Image resampled to isotropic voxel size.
+    """
+    if img_3d.ndim != 3:
+        raise ValueError("Input must be a 3D array (Z, Y, X).")
+    
+    if len(voxel_size_um) != 3 or any(s <= 0 for s in voxel_size_um):
+        raise ValueError("voxel_size_um must be a tuple of 3 positive floats (sz, sy, sx).")
+
+    sz, sy, sx = voxel_size_um
+    min_voxel = min(voxel_size_um)
+    scale_factors = np.array([sz, sy, sx]) / min_voxel
+
+    new_shape = np.round(np.array(img_3d.shape) * scale_factors).astype(int)
+
+    img_iso = resize(
+        img_3d,
+        new_shape,
+        order=order,
+        anti_aliasing=True,
+        preserve_range=True
+    ).astype(img_3d.dtype)
+
+    return img_iso
+
+
+def downsample_xy(img_3d, downsize_factor, order=1):
+    """
+    Downsample the XY dimensions of a 3D image by a given factor.
+
+    Parameters
+    ----------
+    img_3d : np.ndarray
+        3D input image with shape (Z, Y, X).
+    downsize_factor : float
+        Scaling factor for XY (must be in (0, 1]).
+    order : int
+        Interpolation order for resizing.
+
+    Returns
+    -------
+    img_resized : np.ndarray
+        XY-downsampled image.
+    """
+    if not (0 < downsize_factor <= 1):
+        raise ValueError("downsize_factor must be in (0, 1].")
+
+    z, y, x = img_3d.shape
+    new_y = int(round(y * downsize_factor))
+    new_x = int(round(x * downsize_factor))
+
+    img_resized = resize(
+        img_3d,
+        (z, new_y, new_x),
+        order=order,
+        anti_aliasing=True,
+        preserve_range=True
+    ).astype(img_3d.dtype)
+
+    return img_resized
