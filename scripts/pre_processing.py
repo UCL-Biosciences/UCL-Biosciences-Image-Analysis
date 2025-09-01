@@ -150,11 +150,6 @@ def gaussian_filter(
     # calculated by median absolute deviation from median
     mad_before = np.median(np.abs(img - np.median(img)))
     mad_after = np.median(np.abs(out - np.median(out)))
-    # fractional noise reduction
-    # 1e-9 to avoid div by zero
-    noise_drop = (mad_before - mad_after) / (mad_before + 1e-9)
-    if noise_drop < 0.1:
-        print("[WARN] Blur had little effect on noise.")
 
     # edge preservation check
     # use Sobel filter to estimate edges and make sure they are similar before and after
@@ -166,7 +161,8 @@ def gaussian_filter(
         print("[WARN] Edges weakened too much (over-smoothing).")
 
     # print QC, including sigma in voxels, noise drop percentage, and edge ratio
-    print(f"Noise↓ {noise_drop*100:.1f}%, Edge ratio (mean gradident before / mean gradient after) {grad_after/grad_before:.2f}")
+    print(f"MAD before: {mad_before:.4g}, MAD after: {mad_after:.4g}")
+    print(f"Edge ratio (mean gradident before / mean gradient after) {grad_after/grad_before:.2f}")
 
     return out
 
