@@ -56,27 +56,6 @@ def preprocess_3d_image(img_3d,
 
         downsample_xy(img_3d, downsize_factor, order=1)
 
-    # if downsize_factor is not None:
-    #     # Resize the image if downsize_factor is provided
-    #     # first take the first slice to get the shape
-    #     h, w = img_rescaled[0].shape
-    #     #  calculate the output shape based on the downsize factor
-    #     output_shape = [
-    #         int(round(h * downsize_factor, 0)), # height = Y
-    #         int(round(w * downsize_factor, 0)) # width = X
-    #     ]
-
-    #     # Resize each slice to the output shape
-    #     # Note: resize function expects (Y, X) shape
-    #     # np.stack accepts a list of arrays with the same shape
-    #     img_rescaled = np.stack([
-    #         # resize each slice to the output shape
-    #         resize(img_rescaled[z], output_shape, anti_aliasing=True)
-    #         # by looping through the slices
-    #         for z in range(img_rescaled.shape[0])
-    #     ], axis=0)
-
-
     if apply_gaussian_filter:
         print("Applying Gaussian filter...")
         # set default sigma if not provided
