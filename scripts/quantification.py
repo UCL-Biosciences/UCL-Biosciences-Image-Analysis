@@ -363,18 +363,18 @@ def build_object_to_cell_map(struct_labeled, df_obj):
     Map each labeled structure object to its parent cell id (from df_obj['cell_id']) (output of quantify_structures_per_cell in scripts.quantification).
     Returns an int32 volume where voxels of object k are set to its cell_id.
     """
-    mapped = np.zeros_like(struct_labeled, dtype=np.int32)
+    mapped = np.zeros_like(struct_labeled, dtype=np.int32) # creating empty 3D volume of the same shape, initialised with zeros (background)
 
-    # fast vectorized fill: only operate where there are objects
+    # fast vectorised fill: only operate where there are objects in the voxel
     mask = struct_labeled > 0
     obj_ids = struct_labeled[mask].astype(int)
 
     # dict: object_label -> cell_id
-    lbl2cell = dict(zip(df_obj["label"].astype(int), df_obj["cell_id"].astype(int)))
+    lbl2cell = dict(zip(df_obj["label"].astype(int), df_obj["cell_id"].astype(int))) # creates a mapping of object label to cell id from the dataframe
 
-    # vectorized lookup (unseen labels -> 0)
-    get_cell = np.vectorize(lambda l: lbl2cell.get(l, 0))
-    mapped[mask] = get_cell(obj_ids)
+    # vectorised lookup (unseen labels -> 0)
+    get_cell = np.vectorize(lambda l: lbl2cell.get(l, 0))   # replaces an object label with its parent `cell_id`, if a label isn’t found in the dictionary, it assigns 0 (background)
+    mapped[mask] = get_cell(obj_ids)    # fills `mapped` at the object voxel locations with the corresponding `cell_id`
     return mapped
 
 def save_struct_mip_overlay_by_cell(struct_labeled, df_obj, raw_volume, out_png):
@@ -401,7 +401,7 @@ def save_struct_mip_overlay_by_cell(struct_labeled, df_obj, raw_volume, out_png)
     # label2rgb will color by integer value (cell id)
     overlay = label2rgb(mip_map, image=mip_raw, bg_label=0, alpha=0.4)
     plt.imsave(out_png, (overlay * 255).astype(np.uint8))
-    print(f"[INFO] Saved structure→cell overlay MIP to {out_png}")
+    print(f"[INFO] Saved structure to cell overlay MIP to {out_png}")
 
 
 ##### calculations #####
