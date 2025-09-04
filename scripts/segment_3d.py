@@ -31,7 +31,7 @@ def segment_with_cellpose(img_3d, diameter=None, gpu=False):
     print("Running Cellpose...")
     model = models.CellposeModel(gpu=gpu)
     
-    masks, flows, styles, diams = model.eval(
+    masks, flows, styles = model.eval(
     img_3d,
     diameter=diameter,      # diameter can be adjusted fpr better targeted segmentation?
     z_axis=0,               # specify for Cellpose this is 3D: (Z, Y, X)
@@ -77,9 +77,6 @@ def segment_with_stardist(img_3d, model_dir=STARDIST_MODEL_DIR, model_name='3d_d
 
 ### function for segmenting cytoplasm
 
-from skimage.segmentation import watershed
-from skimage.filters import gaussian
-from scipy import ndimage as ndi
 
 def segment_cytoplasm(nuclei_mask, cyto_channel, mode="membrane", sigma=1.0,
                       min_signal=0.05, membrane_threshold=0.2):
@@ -107,6 +104,9 @@ def segment_cytoplasm(nuclei_mask, cyto_channel, mode="membrane", sigma=1.0,
     cytoplasm_labels : ndarray
         Labeled cytoplasm mask.
     """
+    from skimage.segmentation import watershed
+    from scipy import ndimage as ndi
+    from skimage.filters import gaussian
     
     # normalize channel to 0-1
     #channel = preprocess_3d_image(cyto_channel, downsize_factor, per_slice=per_slice_norm)
