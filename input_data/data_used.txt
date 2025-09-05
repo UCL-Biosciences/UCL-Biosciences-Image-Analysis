@@ -3,3 +3,5 @@ Brief overview of data used to perform segmentation:
 1. BBBC035 dataset: Simulated HL60 cells (from the Cell Tracking Challenge) - https://bbbc.broadinstitute.org/BBBC035
   Data has ground truth annotation as foreground
 
+2. S-BIAD1272, 30min_stimulation, 240109_240110_S1_30min_pMAPK_EGF - https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD1272?query=3D%2C%20confocal
+  Dataset is publicly availbale as LIF but we used this to convert to TIF with the macro

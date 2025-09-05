@@ -90,7 +90,7 @@ Alternatively, the ready-to-use dataset (in .tif) could be found here: [240109_2
 Main dependecies, inlcuded in the conda envs:
 - `numpy` (IMPORTANT: to avoid clushes, make sure numpy>=1.24,<2.0), `pandas`, `scikit-image`, `scipy`
 - `stardist`, `cellpose`, `aicssegmentation`
-- `matplotlib`, `tifffile`
+- `matplotlib`, `tifffile`, `ipykernel` 
 
 
 ## Quick start
