@@ -79,7 +79,8 @@ This will load several LIF files for different conditions, the one used here is 
 
 Alternatively, the ready-to-use dataset (in .tif) could be found here: [240109_240110_S1_30min_pMAPK_EGF](https://liveuclac-my.sharepoint.com/:f:/r/personal/ucbtvsi_ucl_ac_uk/Documents/Documents/Lada/30min_stimulation/240109_240110_S1_30min_pMAPK_EGF?csf=1&web=1&e=6WyTO2). However, this may require an additional access request to open OneDrive folder.
 
-
+#### Voxel Size
+A voxel is the three-dimensional equivalent of a pixel, representing a small cube of the imaged sample. The voxel size specifies the physical dimensions of each voxel (e.g. in micrometres) along the x, y, and z axes. Knowing the voxel size is critical for 3D image analysis because it allows correction for anisotropy between axes, ensures that Gaussian smoothing and other filters operate at the right physical scale, and makes results comparable across datasets. Users must obtain the voxel size from their image metadata or acquisition settings before running the analysis.
 
 ### Requirements
 - Python 3.8+
