@@ -2,7 +2,7 @@
 # PROJECT OUTPUT
 # --------------------
 output/
-# input_data/ # note this is where users will download data - don't want it uploaded to the repo
+input_data/ # note this is where users will download data - don't want it uploaded to the repo
 **/validation/
 *.csv
 *.png
