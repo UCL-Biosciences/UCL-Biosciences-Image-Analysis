@@ -63,7 +63,7 @@ The interactive notebook in `notebooks` should serve as a user-friendly tool to 
 
 
 ### Datasets
-We will use a combination of [publicly available benchmark datasets](https://bbbc.broadinstitute.org/image_sets) and data generated within Biosciences to test and demonstrate pipelines. 
+We will use a combination of [publicly available benchmark datasets](https://bbbc.broadinstitute.org/image_sets) and data generated within UCL Biosciences to test and demonstrate pipelines. 
 
 
 The latest 3d multichannel dataset used for developing a pipeline can be found here: [EBI BioImage Archive: S-BIAD1272](https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD1272?query=3D%2C%20confocal). Note, that this dataset is available as multi-well experiment in LIF format. In order to use the data, .lif files were converted to .tif files, using Macro_tiff.ijm (**Instructions to be added**). 
@@ -100,7 +100,9 @@ To use the pipeline, you need:
 
 1. Clone the repository (detailed instructions at the cellpose-pipeline-testing branch) and `git checkout 3d-image-segmentation-pipeline` to move to this branch of the repository
 
-2. Create a conda environment
+2. Save some data in `input_data`. See `Config File` section below for how to specify input paths and other important info.
+
+3. Create a conda environment
     - for HPC (Myriad) use:
         - Load conda module
             ```
@@ -123,7 +125,7 @@ To use the pipeline, you need:
             ```
         - Select this environment as a kernel in Jupyter notebook
 
-3. Open `notebooks/3d_multichannel_analysis.ipynb`, where the main pipeline is demonstrated, and follow the steps:
+4. Open `notebooks/3d_multichannel_analysis.ipynb`, where the main pipeline is demonstrated, and follow the steps:
     - Loading images from multichannel TIFFs
     - Preprocessing (normalization, optional downsampling)
     - Nucleus segmentation
