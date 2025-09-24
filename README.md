@@ -134,7 +134,7 @@ To use the pipeline, you need:
 
 ### Example output
 
-- Nuclear and cytoplasm masks overlaid on raw images + .tif labelled mask
+- Nuclear and cytoplasm masks overlaid on raw images + .tif labelled mask. Open these in e.g. [ImageJ](https://imagej.net/ij/) to look through the 3D stacks.
 
 <p align="center">
   <img src="docs/readme_files/Position010_10_nuclei_overlay_MIP.png" width="300"/>
