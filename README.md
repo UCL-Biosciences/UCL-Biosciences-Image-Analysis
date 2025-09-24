@@ -38,7 +38,7 @@ Image-Analysis-Summer-Project/
 ├── configs/                     # YAML conda environments and config files
 │   ├── 3d_image_segm_env_hpc.yml
 │   ├── 3d_image_segm_env_local.yml
-│   └── example_config.yaml
+│   └── segmentation_config.yaml
 ├── docs/                        # Documentation and notes
 ├── input_data/data_used.txt     # Description of dataset used
 ├── notebooks/                   # Interactive tuning/testing notebooks
@@ -131,6 +131,9 @@ To use the pipeline, you need:
     - Organelle segmentation
     - Quantification of objects
     - Export results as .csv
+
+### Config File
+Important parameters are controlled in a configuration file (`configs/segmentation_config.yml`). Users can edit values here without modifying the code. This approach can be neater and more accessible for those without coding experience. 
 
 ### Example output
 
