@@ -1,0 +1,79 @@
+# Configuration file for segmentation and quantification
+# ---------------------------------------------------------------------------
+# This YAML file defines parameters that control different steps of the analysis.  
+# Users can edit values here without modifying the code.  
+# Empty fields should be filled in with dataset-specific values.  
+# Indentation is important: use spaces (not tabs).  
+# Lines starting with '#' are comments and ignored by the pipeline.  
+
+# ---------------------------------------------------------------------------
+# Input data
+# ---------------------------------------------------------------------------
+input:
+  input_folder: "input_data/S-BIAD1272_30min_stimulation/240109_240110_S1_30min_pMAPK_EGF"        # Path to folder containing 3D image files - can be absolute or relative to repo root
+  voxel_size:           # Physical size of a voxel in micrometres - note the order required is Z, Y, X
+    z: 1
+    y: 0.48147
+    x: 0.48147
+  num_test_images: 3 # Number of images to use for testing parameters in jupyter notebook (set to all images if empty)
+
+# ---------------------------------------------------------------------------
+# Output
+# ---------------------------------------------------------------------------
+output:
+  save_segmented: True  # save segmentation mask as image
+  save_overlay: True    # save overlay of segmentation on raw image
+  results_dir:  "output/S-BIAD1272_30min_stimulation/240109_240110_S1_30min_pMAPK_EGF"       # output directory
+
+# ---------------------------------------------------------------------------
+# Preprocessing
+# ---------------------------------------------------------------------------
+preprocessing:
+  downsize_factor: 0.5  # Factor to downsize images for faster processing (1 = no downsizing)
+  per_slice_norm: False # True = normalise per-slice, False = normalise whole stack
+  # gaussian blur per channel
+  # nucleus
+  gaussian_nucleus: True # apply gaussian blue to nuclei channel
+  gaussian_sigma_nucleus: [1.5, 1.5, 1.5]      # Standard deviation for Gaussian smoothing (µm units)
+  # cytoplasm
+  gaussian_cytoplasm: False      # apply gaussian blue to cytoplasm channel
+  gaussian_sigma_cytoplasm:  [1,1,1]   # Standard deviation for Gaussian smoothing (µm units)
+  # organelle
+  gaussian_organelle: False      # apply gaussian blue to organelle channel
+  gaussian_sigma_organelle:  [1,1,1]   # Standard deviation for Gaussian smoothing (µm units)
+  
+  background_subtract:  # true/false: whether to apply background subtraction
+  normalize:            # true/false: intensity normalization
+
+# ---------------------------------------------------------------------------
+# Segmentation
+# ---------------------------------------------------------------------------
+segmentation:
+  use_model: "stardist" # currently supported: stardist and cellpose
+  prob_thresh: 0.4         # stardist param: sets the minimum confidence for accepting a predicted nucleus
+  nms_thresh: 0.1          # stardist param: remove detections overlapping by more than this threshold
+  gpu: True                # cellpose param: running without GPU is very slow
+  threshold:            # numeric threshold or leave empty for automatic
+  min_size:             # minimum object size (voxels)
+  max_size:             # maximum object size (voxels)
+
+  # cytoplasm specific
+  membrane_threshold: 0.1 # Threshold for membrane signal to act as stopping boundary.
+  cytoplasm_mode: "intensity"   # "membrane" for boundary-based segmentation (membrane marker), "intensity" for intensity-based segmentation (e.g. cytoplasmic marker).
+
+# ---------------------------------------------------------------------------
+# Segmentation
+# ---------------------------------------------------------------------------
+filter_nuclei: True      # true/false: whether to filter nuclei based on shape
+expected_d_um_nuclei: 10  # expected diameter of nuclei in micrometres
+tolerance_size_nuclei: 0.25
+
+# ---------------------------------------------------------------------------
+# Quantification
+# ---------------------------------------------------------------------------
+quantification:
+  measure_intensity:    # true/false
+  measure_volume:       # true/false
+  measure_shape:        # true/false
+  output_table: ""      # path to save results table (CSV/TSV)
+

@@ -35,24 +35,16 @@ This branch has the following structure:
 
 ```text
 Image-Analysis-Summer-Project/
-├── configs/                     # YAML conda environments and config files
-│   ├── 3d_image_segm_env_hpc.yml
-│   ├── 3d_image_segm_env_local.yml
-│   └── example_config.yaml
-├── docs/                        # Documentation and notes
-├── input_data/data_used.txt     # Description of dataset used
-├── notebooks/                   # Interactive tuning/testing notebooks
-│   ├── 3d_multichannel_analysis.ipynb      # Main notebook for multichannel image processing 
-│   └── 3d_segmentation_prototype.ipynb     # Notebook prototype with 3d nucleus segmentation
-├── scripts/                     
-│   ├── io_utils.py              # Input/output helpers
-│   ├── segmentation.py          # Nuclear + cytoplasm segmentation
-│   ├── quantification.py        # Object quantification, voxel size operations
-│   └── pre_processing.py        # Preprocessing utilities
-├── jobs/                        # HPC execution scripts (to be completed)
-│   ├── run_pipeline_3d.sh
-│   └── main.py
-└── models/stardist-models/3d_demo          # Local version of StarDist model
+├── analysis_3d
+│   ├── configs       # YAML conda environments and config files 
+│   ├── docs          # Documentation and notes 
+│   ├── jobs          # HPC execution scripts (to be completed) 
+│   ├── models        # Local version of StarDist model 
+│   ├── notebooks     # Interactive tuning/testing notebooks  
+│   └── scripts       # scripts used to run the analysis- input/output stuff, segmentation, object quantification, preprocessing steps 
+├── input_data        # default location for input data
+└── output            # default location for output
+
    
 ```
 
@@ -63,7 +55,7 @@ The interactive notebook in `notebooks` should serve as a user-friendly tool to 
 
 
 ### Datasets
-We will use a combination of [publicly available benchmark datasets](https://bbbc.broadinstitute.org/image_sets) and data generated within Biosciences to test and demonstrate pipelines. 
+We will use a combination of [publicly available benchmark datasets](https://bbbc.broadinstitute.org/image_sets) and data generated within UCL Biosciences to test and demonstrate pipelines. 
 
 
 The latest 3d multichannel dataset used for developing a pipeline can be found here: [EBI BioImage Archive: S-BIAD1272](https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD1272?query=3D%2C%20confocal). Note, that this dataset is available as multi-well experiment in LIF format. In order to use the data, .lif files were converted to .tif files, using Macro_tiff.ijm (**Instructions to be added**). 
@@ -79,7 +71,8 @@ This will load several LIF files for different conditions, the one used here is 
 
 Alternatively, the ready-to-use dataset (in .tif) could be found here: [240109_240110_S1_30min_pMAPK_EGF](https://liveuclac-my.sharepoint.com/:f:/r/personal/ucbtvsi_ucl_ac_uk/Documents/Documents/Lada/30min_stimulation/240109_240110_S1_30min_pMAPK_EGF?csf=1&web=1&e=6WyTO2). However, this may require an additional access request to open OneDrive folder.
 
-
+#### Voxel Size
+A voxel is the three-dimensional equivalent of a pixel, representing a small cube of the imaged sample. The voxel size specifies the physical dimensions of each voxel (e.g. in micrometres) along the x, y, and z axes. Knowing the voxel size is critical for 3D image analysis because it allows correction for anisotropy between axes, ensures that Gaussian smoothing and other filters operate at the right physical scale, and makes results comparable across datasets. Users must obtain the voxel size from their image metadata or acquisition settings before running the analysis.
 
 ### Requirements
 - Python 3.8+
@@ -99,7 +92,9 @@ To use the pipeline, you need:
 
 1. Clone the repository (detailed instructions at the cellpose-pipeline-testing branch) and `git checkout 3d-image-segmentation-pipeline` to move to this branch of the repository
 
-2. Create a conda environment
+2. Save some data in `input_data`. See `Config File` section below for how to specify input paths and other important info.
+
+3. Create a conda environment
     - for HPC (Myriad) use:
         - Load conda module
             ```
@@ -122,7 +117,7 @@ To use the pipeline, you need:
             ```
         - Select this environment as a kernel in Jupyter notebook
 
-3. Open `notebooks/3d_multichannel_analysis.ipynb`, where the main pipeline is demonstrated, and follow the steps:
+4. Open `notebooks/3d_multichannel_analysis.ipynb`, where the main pipeline is demonstrated, and follow the steps:
     - Loading images from multichannel TIFFs
     - Preprocessing (normalization, optional downsampling)
     - Nucleus segmentation
@@ -131,13 +126,16 @@ To use the pipeline, you need:
     - Quantification of objects
     - Export results as .csv
 
+### Config File
+Important parameters are controlled in a configuration file (`configs/segmentation_config.yml`). Users can edit values here without modifying the code. This approach can be neater and more accessible for those without coding experience. 
+
 ### Example output
 
-- Nuclear and cytoplasm masks overlaid on raw images + .tif labelled mask
+- Nuclear and cytoplasm masks overlaid on raw images + .tif labelled mask. Open these in e.g. [ImageJ](https://imagej.net/ij/) to look through the 3D stacks.
 
 <p align="center">
-  <img src="docs/readme_files/Position010_10_nuclei_overlay_MIP.png" width="300"/>
-  <img src="docs/readme_files/Position010_10_cytoplasm_overlay_MIP.png" width="300"/>
+  <img src="analysis_3d/docs/readme_files/Position010_10_nuclei_overlay_MIP.png" width="300"/>
+  <img src="analysis_3d/docs/readme_files/Position010_10_cytoplasm_overlay_MIP.png" width="300"/>
 </p>
 
 
@@ -145,15 +143,15 @@ To use the pipeline, you need:
 - Organelle segmentation (e.g. spotty structures) .tif binary mask and MIP overlay + organelle object-to-cell assignment labelled mask
 
 <p align="center">
-  <img src="docs/readme_files/Position010_10_structure_overlay_MIP.png" width="300"/>
-  <img src="docs/readme_files/Position010_10_struct_to_cell_MIP.png" width="300"/>
+  <img src="analysis_3d/docs/readme_files/Position010_10_structure_overlay_MIP.png" width="300"/>
+  <img src="analysis_3d/docs/readme_files/Position010_10_struct_to_cell_MIP.png" width="300"/>
 </p>
 
 
 - Per-cell quantification table (CSV) 
 
  <p align="center">
-  <img src="docs/readme_files/quantification_result_example.png" width="600"/>
+  <img src="analysis_3d/docs/readme_files/quantification_result_example.png" width="600"/>
 </p>
 
 
