@@ -1,6 +1,4 @@
-# Image-Analysis-Summer-Project
-Repo for hosting key info for the summer placement: plan, resources, progress, outputs
-
+# UCL-Biosciences-Image Analysis
 ## Background
 Analysing bioimage data is becoming increasingly complex. File sizes, the number of images and samples, and complex algorithms require specialised knowledge.
 
