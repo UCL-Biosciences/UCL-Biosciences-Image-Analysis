@@ -35,24 +35,16 @@ This branch has the following structure:
 
 ```text
 Image-Analysis-Summer-Project/
-├── configs/                     # YAML conda environments and config files
-│   ├── 3d_image_segm_env_hpc.yml
-│   ├── 3d_image_segm_env_local.yml
-│   └── segmentation_config.yaml
-├── docs/                        # Documentation and notes
-├── input_data/data_used.txt     # Description of dataset used
-├── notebooks/                   # Interactive tuning/testing notebooks
-│   ├── 3d_multichannel_analysis.ipynb      # Main notebook for multichannel image processing 
-│   └── 3d_segmentation_prototype.ipynb     # Notebook prototype with 3d nucleus segmentation
-├── scripts/                     
-│   ├── io_utils.py              # Input/output helpers
-│   ├── segmentation.py          # Nuclear + cytoplasm segmentation
-│   ├── quantification.py        # Object quantification, voxel size operations
-│   └── pre_processing.py        # Preprocessing utilities
-├── jobs/                        # HPC execution scripts (to be completed)
-│   ├── run_pipeline_3d.sh
-│   └── main.py
-└── models/stardist-models/3d_demo          # Local version of StarDist model
+├── analysis_3d
+│   ├── configs       # YAML conda environments and config files 
+│   ├── docs          # Documentation and notes 
+│   ├── jobs          # HPC execution scripts (to be completed) 
+│   ├── models        # Local version of StarDist model 
+│   ├── notebooks     # Interactive tuning/testing notebooks  
+│   └── scripts       # scripts used to run the analysis- input/output stuff, segmentation, object quantification, preprocessing steps 
+├── input_data        # default location for input data
+└── output            # default location for output
+
    
 ```
 
