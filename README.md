@@ -26,7 +26,7 @@ cellpose-segmentation-demo/
 2. Clone the project repository into your workspace:
 
 ```
-git clone https://github.com/jdgilbert245/Image-Analysis-Summer-Project.git
+git clone https://github.com/jdgilbert245/UCL-Biosciences-Image-Analysis.git
 cd Image-Analysis-Summer-Project
 git checkout image-segmentation-cellpose-demo # move to this branch of the repository
 ```
