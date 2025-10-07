@@ -134,8 +134,8 @@ Important parameters are controlled in a configuration file (`configs/segmentati
 - Nuclear and cytoplasm masks overlaid on raw images + .tif labelled mask. Open these in e.g. [ImageJ](https://imagej.net/ij/) to look through the 3D stacks.
 
 <p align="center">
-  <img src="docs/readme_files/Position010_10_nuclei_overlay_MIP.png" width="300"/>
-  <img src="docs/readme_files/Position010_10_cytoplasm_overlay_MIP.png" width="300"/>
+  <img src="analysis_3d/docs/readme_files/Position010_10_nuclei_overlay_MIP.png" width="300"/>
+  <img src="analysis_3d/docs/readme_files/Position010_10_cytoplasm_overlay_MIP.png" width="300"/>
 </p>
 
 
@@ -143,15 +143,15 @@ Important parameters are controlled in a configuration file (`configs/segmentati
 - Organelle segmentation (e.g. spotty structures) .tif binary mask and MIP overlay + organelle object-to-cell assignment labelled mask
 
 <p align="center">
-  <img src="docs/readme_files/Position010_10_structure_overlay_MIP.png" width="300"/>
-  <img src="docs/readme_files/Position010_10_struct_to_cell_MIP.png" width="300"/>
+  <img src="analysis_3d/docs/readme_files/Position010_10_structure_overlay_MIP.png" width="300"/>
+  <img src="analysis_3d/docs/readme_files/Position010_10_struct_to_cell_MIP.png" width="300"/>
 </p>
 
 
 - Per-cell quantification table (CSV) 
 
  <p align="center">
-  <img src="docs/readme_files/quantification_result_example.png" width="600"/>
+  <img src="analysis_3d/docs/readme_files/quantification_result_example.png" width="600"/>
 </p>
 
 
