@@ -17,7 +17,7 @@ The pipeline is implemented as a combination of **scripts** (for reproducibility
 
 ### Core workflow:
 
-![Image analysis workflow plan](docs/readme_files/project_plan_workflow.jpg)
+![Image analysis workflow plan](../docs/readme_files/project_plan_workflow.jpg)
 
 - Users explore a notebook-based interface to test segmentation and tune parameters on a small image subset
 - Configs (parameters) are automatically exported to a structured .yaml file and saved at `configs` with a new name.
@@ -27,7 +27,7 @@ The pipeline is implemented as a combination of **scripts** (for reproducibility
 ### Branching logic
 The project can be further extended by following the branching logic outlined below. All additions should be modular and easily integrable into the existing framework.
 
-![Branching logic table](docs/readme_files/image.png)
+![Branching logic table](../docs/readme_files/image.png)
 
 
 ### Project structure
@@ -134,8 +134,8 @@ Important parameters are controlled in a configuration file (`configs/segmentati
 - Nuclear and cytoplasm masks overlaid on raw images + .tif labelled mask. Open these in e.g. [ImageJ](https://imagej.net/ij/) to look through the 3D stacks.
 
 <p align="center">
-  <img src="docs/readme_files/Position010_10_nuclei_overlay_MIP.png" width="300"/>
-  <img src="docs/readme_files/Position010_10_cytoplasm_overlay_MIP.png" width="300"/>
+  <img src="../docs/readme_files/Position010_10_nuclei_overlay_MIP.png" width="300"/>
+  <img src="../docs/readme_files/Position010_10_cytoplasm_overlay_MIP.png" width="300"/>
 </p>
 
 
@@ -143,15 +143,15 @@ Important parameters are controlled in a configuration file (`configs/segmentati
 - Organelle segmentation (e.g. spotty structures) .tif binary mask and MIP overlay + organelle object-to-cell assignment labelled mask
 
 <p align="center">
-  <img src="docs/readme_files/Position010_10_structure_overlay_MIP.png" width="300"/>
-  <img src="docs/readme_files/Position010_10_struct_to_cell_MIP.png" width="300"/>
+  <img src="../docs/readme_files/Position010_10_structure_overlay_MIP.png" width="300"/>
+  <img src="../docs/readme_files/Position010_10_struct_to_cell_MIP.png" width="300"/>
 </p>
 
 
 - Per-cell quantification table (CSV) 
 
  <p align="center">
-  <img src="docs/readme_files/quantification_result_example.png" width="600"/>
+  <img src="../docs/readme_files/quantification_result_example.png" width="600"/>
 </p>
 
 
