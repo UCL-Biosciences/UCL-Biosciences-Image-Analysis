@@ -14,7 +14,7 @@ Our resources will demonstrate a robust and reproducible workflow, from data gen
 2. Data analysis - robust and reproducible analyses
 3. Data publishing - promote FAIR principles through good practice when publishing results
 
-![Computational support for image analysis](Imaging-plan-20250716.svg)
+![Computational support for image analysis](docs/readme_files/Imaging-plan-20250716.svg)
 
 ### Data Management
 Transfer data and confirm with md5
