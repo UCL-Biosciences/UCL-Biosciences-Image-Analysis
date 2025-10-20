@@ -164,3 +164,4 @@ This pipeline utilises and builds upon:
 - [CellPose](https://github.com/mouseland/cellpose)
 - [Allen Cell Segmentation workflows](https://www.allencell.org/segmenter.html#lookup-table)
 - [scikit-image](https://scikit-image.org/docs/0.25.x/api/skimage.html)
+- Datasets used in this repo are licensed under CC BY 4.0. Full attribution is given in `docs/data_used.txt`
