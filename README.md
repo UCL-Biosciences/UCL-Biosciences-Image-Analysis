@@ -67,4 +67,6 @@ The repo has a few branches to be aware of:
 ## Resources
 There are lots of great resources for learning image analysis. 
 
-Robert Haase has a[ set of notebooks](https://haesleinhuepf.github.io/BioImageAnalysisNotebooks/intro.html) that cover a lot of key concepts. It includes a [large language model trained on image analysis](https://chat.openai.com/g/g-psAohb1OY-bio-image-analysis).
+Robert Haase has a [huge resource](https://haesleinhuepf.github.io/BioImageAnalysisNotebooks/intro.html) covering a lot of key concepts. It includes a [large language model trained on image analysis](https://chat.openai.com/g/g-psAohb1OY-bio-image-analysis).
+
+Or there is a similar set of [interactive notebooks](https://github.com/guiwitz/neubias_academy_biapy).
