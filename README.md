@@ -64,6 +64,7 @@ The repo has a few branches to be aware of:
 - Pull regularly to stay up to date
 - Write clear messages so everyone can see what changes you've made
 
+## Resources
+There are lots of great resources for learning image analysis. 
 
-## Impact
-Others can use it
+Robert Haase has a[ set of notebooks](https://haesleinhuepf.github.io/BioImageAnalysisNotebooks/intro.html) that cover a lot of key concepts. It includes a [large language model trained on image analysis](https://chat.openai.com/g/g-psAohb1OY-bio-image-analysis).
