@@ -70,3 +70,7 @@ There are lots of great resources for learning image analysis.
 Robert Haase has a [huge resource](https://haesleinhuepf.github.io/BioImageAnalysisNotebooks/intro.html) covering a lot of key concepts. It includes a [large language model trained on image analysis](https://chat.openai.com/g/g-psAohb1OY-bio-image-analysis).
 
 Or there is a similar set of [interactive notebooks](https://github.com/guiwitz/neubias_academy_biapy).
+
+The EPFL Center for Imaging [awesome-scientific-image-analysis repo](https://github.com/EPFL-Center-for-Imaging/awesome-scientific-image-analysis) is a curated list of scientific image analysis resources and software tools.
+
+
