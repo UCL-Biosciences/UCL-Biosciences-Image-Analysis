@@ -74,3 +74,5 @@ Or there is a similar set of [interactive notebooks](https://github.com/guiwitz/
 The EPFL Center for Imaging [awesome-scientific-image-analysis repo](https://github.com/EPFL-Center-for-Imaging/awesome-scientific-image-analysis) is a curated list of scientific image analysis resources and software tools.
 
 More locally, the Crick has lots of good resources for both training and resources, e.g. [this course](https://github.com/FrancisCrickInstitute/introduction-to-image-analysis/tree/main).
+
+Globias has a [Call 4 Help website](https://call4help.let-your-data-speak.com/) where you can take image analysis problems and ask for help from a large community of experts.
