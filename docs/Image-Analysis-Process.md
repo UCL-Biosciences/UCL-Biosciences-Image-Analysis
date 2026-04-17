@@ -1,12 +1,10 @@
 # Image Analysis Process
 The image analysis workflow can be tricky to follow. There are multiple steps and each can have many options. Plus, you only know whether you chose the right option much later, before having to go back to an earlier step to try a different approach. If you don't approach it in an organised way, it can be confusing. So we thought we would lay out some general steps for processing image data to identify, segment and quantify images.
 
+For general image analysis introductions, lots of fantastic resources already exist e.g. [this guide](https://haesleinhuepf.github.io/BioImageAnalysisNotebooks/20_image_segmentation/readme.html).
+
 ## Segmentation Decisions
-Segmentation of bioimages is a decision process, not a single algorithm. Classic (non-deep-learning) methods work well for many fluorescence datasets, but performance depends on contrast, object size, touching rate, and staining consistency. This guide provides a structured workflow and routing logic so users do not jump randomly between filters and thresholds.
-
-Here, we just describe the steps briefly. For more info, see e.g. [this guide](https://haesleinhuepf.github.io/BioImageAnalysisNotebooks/20_image_segmentation/readme.html).
-
-The framework follows a simple sequence:
+The approach follows a simple sequence:
 
 1. Record key information about your images
 2. Preprocessing. Clean the image by reducing noise, adjusting contrast, and correcting background.
@@ -16,7 +14,9 @@ The framework follows a simple sequence:
 6. Refine masks. Post-process masks with morphological operations (e.g., erosion, dilation, hole filling) to clean boundaries.
 7. Quality-check. Compare automated outputs against expexted or ground truth annotations to assess accuracy.
 
-Each stage has clear decision points. If the required conditions are not met, the user branches appropriately (e.g. improve contrast or adjust seeding rather than forcing a failing threshold). The aim is to reduce guesswork and keep workflows simple and reproducible.
+After each, users should interpret the output and decide whether further processing is needed before moving onto the next step.
+
+Clearly this is not supposed to be an exhaustive list, but hopefully provides a starting point for structuring segmentation tasks.
 
 ## 1. Record Key Info
 As with all data analysis, understanding your data is crucial for efficient and robust analysis. These are some of the important things to think about as you start image analysis.
