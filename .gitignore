@@ -3,6 +3,8 @@
 # --------------------
 output/
 input_data/ # note this is where users will download data - don't want it uploaded to the repo
+input_data/*
+input_data/
 **/validation/
 *.csv
 *.png
