@@ -48,6 +48,8 @@ We happily will have a team of people working on this project. It would be good 
 ### Environments
 To make sure we can all run the same code on our own machines, we will use [conda environments](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html#managing-python). Once you have made an env and installed packages, export the list of packages with `conda env export --no-builds > requirements.txt`. This means anyone can recreate the envirornment with `conda env create -f requirements.txt` and we can all work happily and reproucibly! 
 
+To make a conda env available as a jupyter notebook kernel: `python -m ipykernel install --user --name myenv --display-name "Python (myenv)"`
+
 ### Branches
 The repo has a few branches to be aware of:
 - `Main` is for recording key info about the project. No code on here yet.
