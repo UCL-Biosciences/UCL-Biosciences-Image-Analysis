@@ -13,6 +13,17 @@ input_data/
 *.tif
 *.tiff
 notebooks/core.*
+output*
+output/*
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+### default python .gitignore template
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -221,3 +232,6 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Streamlit
+.streamlit/secrets.toml
