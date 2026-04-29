@@ -7,3 +7,8 @@ Brief overview of data used to perform segmentation:
   Dataset is publicly available as LIF. We converted the files to TIF with a custom fiji macro. Five of these .tif files are included in the repo to allow users to test the 3D notebook.
   Reproduced from Claudia Catapano, Marina S. Dietz & Mike Heilemann (2024). Confocal microscopy data of phospho-p44/42 MAPK (Erk1/2) (Thr202/Tyr204) in HeLa cells stimulated with EGF or HGF. BioStudies, S-BIAD1272. Retrieved from https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD1272
   Under licence CC by 4.0 (https://creativecommons.org/licenses/by/4.0/)
+
+3. BBBC006 dataset (Ljosa et al., Nature Methods, 2012). "This image set provides examples of in- and out-of-focus HCS images which can be used for validation of focus metrics." We take only z_16, which is in focus. They are good nuclei to try segmentation.
+
+BBBC link: https://bbbc.broadinstitute.org/BBBC006
+original paper: http://dx.doi.org/10.1038/nmeth.2083
