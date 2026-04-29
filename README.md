@@ -42,6 +42,9 @@ There are a range of datasets on there, including [3D datasets](https://bbbc.bro
 
 By running on different datasets, we will generate recommendations for a range of challenges and problems. Important as tutorials often only run on a single, simple test dataset.
 
+### lif to tif
+For some datasets, we may have converted the raw images from lif to tif using this [fiji macro](https://gist.github.com/lacan/16e12482b52f539795e49cb2122060cc). 
+
 ## Collaboration
 We happily will have a team of people working on this project. It would be good for all contributors to read [this tutorial](https://vickysteeves.gitlab.io/collaborating-with-git/collaborating-with-git.html) before starting.
 
