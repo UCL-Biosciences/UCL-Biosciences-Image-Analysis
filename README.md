@@ -53,12 +53,6 @@ To make sure we can all run the same code on our own machines, we will use [cond
 
 To make a conda env available as a jupyter notebook kernel: `python -m ipykernel install --user --name myenv --display-name "Python (myenv)"`
 
-### Branches
-The repo has a few branches to be aware of:
-- `Main` is for recording key info about the project. No code on here yet.
-- `image-segmentation-cellpose-demo` contains an example of how these projects might look for segmenting 2D data. See the notebook in `notebooks` for example of how a guide might look. `scripts` contains all the functions used in the notebook. `jobs` contains a script (`run_segmentation.sh`) that will submit the same work to myriad via a `main.py` script.
-- I think Lada will start a new branch for her work - adding an issue now.
-
 ### Some important tips
 - Clone the repository and make the conda environments first.
 - We will organise tasks in the Issues tab. Share updates and questions there. Assign tasks to yourself if you are working on something.
