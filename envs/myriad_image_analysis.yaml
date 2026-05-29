@@ -150,6 +150,7 @@ dependencies:
   - python-dateutil=2.9.0.post0
   - python-gil=3.14.3
   - python_abi=3.14
+  - pyyaml=6.0.2
   - pyzmq=27.1.0
   - qhull=2020.2
   - qt6-main=6.11.0
@@ -191,7 +192,9 @@ dependencies:
   - xorg-libxrender=0.9.12
   - xorg-libxtst=1.2.5
   - xorg-libxxf86vm=1.1.7
+  - yaml=0.2.5
   - zeromq=4.3.5
   - zfp=1.0.1
   - zlib-ng=2.3.3
   - zstd=1.5.7
+prefix: /home/ucsagil/.conda/envs/myriad_image_analysis
