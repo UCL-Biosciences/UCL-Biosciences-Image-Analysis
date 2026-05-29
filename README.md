@@ -113,15 +113,6 @@ The EPFL Center for Imaging [awesome-scientific-image-analysis repo](https://git
 More locally, the Crick has lots of good resources for both training and resources, e.g. [this course](https://github.com/FrancisCrickInstitute/introduction-to-image-analysis/tree/main).
 
 Globias has a [Call 4 Help website](https://call4help.let-your-data-speak.com/) where you can take image analysis problems and ask for help from a large community of experts.
-# Image Segmentation With Cellpose-SAM
-
-A modular pipeline for segmenting 2D microscopy images using Cellpose-SAM and validating segmentation quality.
-
-
-
-
-
-
 
 
 
