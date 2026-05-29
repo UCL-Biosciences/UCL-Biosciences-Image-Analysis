@@ -1,4 +1,8 @@
 # UCL-Biosciences-Image Analysis
+**Note**. This is a work-in-progress - some details and code need updating.
+
+> **Who is this for?** PIs, postdocs, and PhD students who doing image analysis at UCL. We introduce image analysis, demonstrate some python-based workflows, and give instructions for running these workflows on Myriad, one of UCL's [High Performance Compute resources](https://github.com/UCL-Biosciences/Biosciences-Comp-Support/blob/main/UCL_comp_guides/high_performance_compute_at_UCL.md).
+
 ## Background
 Analysing bioimage data is becoming increasingly complex. File sizes, the number of images and samples, and complex algorithms require specialised knowledge.
 
