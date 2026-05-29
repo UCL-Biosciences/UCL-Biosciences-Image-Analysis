@@ -38,7 +38,7 @@ We use [conda environments](https://docs.conda.io/projects/conda/en/latest/user-
 
 We have a seprate one for image analysis without cellpose because it requires fewer packages and is easier to load: `envs/myriad_image_analysis.yaml` for myriad, `ADD_HERE_FOR_LOCAL` for local. This is sufficient for the first notebook that [segments nuclei via thresholding](https://github.com/UCL-Biosciences/UCL-Biosciences-Image-Analysis/blob/main/notebooks/01_segment_touching_nuclei.ipynb).
 
-For [2D segmentation](https://github.com/UCL-Biosciences/UCL-Biosciences-Image-Analysis/blob/main/notebooks/02_cellpose_segment_touching_nuclei.ipynb) with cellpose, use `envs/myriad_cellpose.yaml` and `ADD_CELLPOSE_FOR_LOCAL`?
+For notebooks 2, 3 and 4 that use cellpose, use `envs/myriad_cellpose.yaml` and `ADD_CELLPOSE_FOR_LOCAL`?
 
 For the last two notebooks, which involve 3D segmentation, use `envs/myriad_3d` CHECK_THIS. For local, use this and make sure gpu is set to false.
 
