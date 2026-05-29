@@ -84,11 +84,10 @@ A modular pipeline for segmenting 2D microscopy images using Cellpose-SAM and va
 cellpose-segmentation-demo/
 
 ```
-├── configs/              # Configuration files
-│   └── params.yaml      # Main parameter settings
+├── docs/           # docs explaining the repo in more detail
+├── envs/           # environment files used to create conda environments
+├── input_data/           # a few example images used by the notebooks
 ├── notebooks/           # Jupyter notebooks for development
-├── scripts/             # Core Python modules (segmentation, validation, etc.)
-├── jobs/                # HPC batch scripts
 └── output/              # Generated outputs (ignored by Git)
 ```
 ## Requirements
