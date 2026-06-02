@@ -36,11 +36,11 @@ We happily will have a team of people working on this project. It would be good 
 ### Environments
 We use [conda environments](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html#managing-python) to manage the python libraries needed for the project. This is easier for users to set up, easier to share with others, and more reproducible. Setup instructions below. There are several environments that can be used for different notebooks.
 
-We have a seprate one for image analysis without cellpose because it requires fewer packages and is easier to load: `envs/myriad_image_analysis.yaml` for myriad, `ADD_HERE_FOR_LOCAL` for local. This is sufficient for the first notebook that [segments nuclei via thresholding](https://github.com/UCL-Biosciences/UCL-Biosciences-Image-Analysis/blob/main/notebooks/01_segment_touching_nuclei.ipynb).
+We have a separate one for image analysis without cellpose because it requires fewer packages and is easier to load: `envs/myriad_image_analysis.yaml` for myriad, `envs/windows_image_analysis` for local. This is sufficient for the first notebook that [segments nuclei via thresholding](https://github.com/UCL-Biosciences/UCL-Biosciences-Image-Analysis/blob/main/notebooks/01_segment_touching_nuclei.ipynb).
 
-For notebooks 2, 3 and 4 that use cellpose, use `envs/myriad_cellpose.yaml` and `ADD_CELLPOSE_FOR_LOCAL`?
+For notebooks 2, 3 and 4 that use cellpose, use `envs/myriad_cellpose.yaml` and `envs/windows_image_analysis`.
 
-For the last two notebooks, which involve 3D segmentation, use `envs/myriad_3d` CHECK_THIS. For local, use this and make sure gpu is set to false.
+For the last two notebooks, which involve 3D segmentation, use `envs/myriad_cellpose.yaml`. For local, use this and make sure gpu is set to false. Warning: Using Cellpose without gpu is very slow.
 
 ## Project Structure
 ```
