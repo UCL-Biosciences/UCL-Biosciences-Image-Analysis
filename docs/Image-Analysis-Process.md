@@ -1,114 +1,117 @@
 # Image Analysis Process
-The image analysis workflow can be tricky to follow. There are multiple steps and each can have many options. Plus, you only know whether you chose the right option much later, before having to go back to an earlier step to try a different approach. If you don't approach it in an organised way, it can be confusing. So we thought we would lay out some general steps for processing image data to identify, segment and quantify images.
 
-For general image analysis introductions, lots of fantastic resources already exist e.g. [this guide](https://haesleinhuepf.github.io/BioImageAnalysisNotebooks/20_image_segmentation/readme.html).
+This document outlines a general workflow for segmenting and quantifying objects in microscopy images. It is not exhaustive, it as a starting framework, not a fixed recipe. Each step requires you to inspect the output and decide whether it is good enough before moving on.
 
-## Segmentation Decisions
-The approach follows a simple sequence:
+For broader introductions to bioimage analysis, see [this guide](https://haesleinhuepf.github.io/BioImageAnalysisNotebooks/20_image_segmentation/readme.html).
+
+---
+
+## Workflow Overview
 
 1. Record key information about your images
-2. Preprocessing. Clean the image by reducing noise, adjusting contrast, and correcting background.
-3. Foreground masks. Identify and isolate regions of interest with binary segmentation.
-4. Generate seeds. Mark initial points inside objects to guide segmentation.
-5. Separate objects with watershed. Use boundary information to split touching or overlapping objects into separate regions.
-6. Refine masks. Post-process masks with morphological operations (e.g., erosion, dilation, hole filling) to clean boundaries.
-7. Quality-check. Compare automated outputs against expexted or ground truth annotations to assess accuracy.
+2. Preprocess — reduce noise, correct background, normalise intensity
+3. Create a foreground mask — separate signal from background
+4. Generate seeds — mark object centres to guide separation
+5. Run watershed — split touching or overlapping objects
+6. Refine masks — clean up boundaries and filter by size/shape
+7. Quality-check — verify results against expectations or ground truth
 
-After each, users should interpret the output and decide whether further processing is needed before moving onto the next step.
+---
 
-Clearly this is not supposed to be an exhaustive list, but hopefully provides a starting point for structuring segmentation tasks.
+## Step 1: Record Key Information
 
-## 1. Record Key Info
-As with all data analysis, understanding your data is crucial for efficient and robust analysis. These are some of the important things to think about as you start image analysis.
+Before writing a single line of analysis, understand your data. The decisions you make in every subsequent step depend on what you record here.
 
-Object: nuclei / whole cells / sub-objects
+| Property | What to note |
+|---|---|
+| **Object type** | Nuclei, whole cells, organelles, other |
+| **Imaging modality** | Fluorescence or brightfield; which channel marks the object vs boundary |
+| **Expected size** | Approximate diameter or pixel area |
+| **Confluency** | How often objects touch — low, medium, or high |
+| **Shape** | Round, elongated, or irregular |
+| **Signal consistency** | Does intensity vary across fields, wells, or batches? |
+| **Error tolerance** | Is it worse to miss objects, or to over-split them? |
 
-Imaging: fluorescence / brightfield; channels used for object vs boundary
+**Why this matters:**
 
-Size range: expected pixel area or diameter. Calculate:
+- **Size** determines filter scales and distance-transform parameters.
+- **Confluency** tells you whether you need seeds and watershed at all.
+- **Shape** guides your choice of seeding strategy (intensity peaks vs erosion vs skeletonisation).
+- **Signal consistency** determines whether global or adaptive thresholding is appropriate.
+- **Error tolerance** sets how aggressive your thresholds and watershed should be.
 
-- effective_px_size = camera_px_size / magnification
-- effective_px_size_after_binning = effective_px_size × bin_factor
-- expected_pixel_diameter = physical_diameter / effective_px_size_after_binning
+> If you cannot estimate size or touching frequency, inspect ~50 fields and measure before proceeding. If you are unsure whether contrast is stable, check across plates or batches first.
 
-Touching frequency: low / medium / high
+---
 
-Shape: round / elongated / irregular
+## Step 2: Preprocessing
 
-Signal reliability: consistent / variable (across field, across batch)
+Raw microscopy images nearly always need cleaning before analysis. Skipping this step leads to unreliable segmentation downstream.
 
-Error tolerance: more acceptable to miss objects or to over-split?
+- **Background correction:** Remove uneven illumination or shading artefacts so that signal reflects biology, not optics.
+- **Denoising:** Reduce random noise while preserving structural detail.
+- **Intensity normalisation:** Scale values to a consistent range so images are comparable across samples or timepoints.
+- **Contrast enhancement:** Improve visibility of faint structures by adjusting intensity levels.
 
-## Why this matters ##
-Size → filters and distance-transform parameters
+Inspect the output before moving on. Ask: does the signal look clean and even? Are structures clearly visible?
 
-Touching → need for seeds and watershed
+---
 
-Shape → distance peaks vs erosion vs skeleton seeds
+## Step 3: Foreground Mask
 
-Signal quality → global vs adaptive thresholding
+A foreground mask is a binary image — each pixel is either object (1) or background (0). The goal is to isolate the pixels that contain biologically meaningful signal.
 
-Error preference → threshold and watershed aggressiveness
+- **Thresholding:** Apply an intensity cutoff (global or adaptive) to separate signal from background.
+- **Binary conversion:** Convert the thresholded image to a mask.
+- **Morphological cleanup:** Remove small noise specks, fill holes, smooth edges.
+- **Region filtering:** Discard connected components that are too small or too large to be real objects.
 
-# If missing information
-If you cannot estimate size and touching rate, inspect ~50 fields and measure.
+The mask does not need to separate individual objects yet — that comes later. It just needs to correctly capture which pixels are foreground.
 
-If you do not know whether contrast is stable, check across plates/batches.
+---
 
-## 2. Preprocessing
-Preprocessing is the initial stage of bioimage analysis where raw microscopy images are cleaned and standardised before further processing. The goal is to improve image quality, reduce artifacts, and make biological structures easier to detect and quantify. Without preprocessing, downstream steps like segmentation or feature extraction may be inaccurate or unreliable.
+## Step 4: Generate Seeds
 
-Key steps include:
+Seeds are marker points placed inside individual objects to guide the watershed step. They are especially important when objects are touching or overlapping.
 
-- Background correction: Remove uneven illumination or shading to highlight true signal.
-- Denoising: Reduce random noise while preserving fine details of cells or structures.
-- Normalisation: Scale intensity values to a consistent range for comparability across samples.
-- Contrast enhancement: Improve visibility of faint structures by adjusting intensity levels.
+- **Local maxima detection:** Find intensity peaks within objects.
+- **Distance transform:** Compute the distance from the background to identify object centres — useful when intensity peaks are unreliable.
+- **Marker assignment:** Give each seed a unique label.
+- **Validation:** Check that seeds sit inside objects, not in background or on borders.
 
-## 3. Foreground Masks
-Foreground mask extraction is the process of separating meaningful biological structures (cells, tissues, organelles) from the background in an image. This step isolates regions of interest so that downstream analysis (segmentation, counting, intensity measurement) focuses only on biologically relevant pixels rather than noise or background. It produces a "mask", which means each pixel has one of two values - true (foreground) or false (background).
+One seed per object is the goal. Too few seeds and objects merge; too many and objects over-split.
 
-Key steps include:
-- Thresholding: Apply intensity cutoffs (global or adaptive) to distinguish signal from background.
-- Binary conversion: Transform the image into a mask where foreground pixels are marked as 1 and background as 0.
-- Morphological cleanup: Refine masks by removing small specks, filling holes, or smoothing edges.
-- Region selection: Keep only connected components that match expected object size or shape.
+---
 
-## 4. Generate seeds
-Seed generation is the process of placing initial marker points inside objects of interest to guide segmentation algorithms. Seeds act as starting references that help distinguish individual objects, especially when they are touching or overlapping, ensuring more accurate separation.
+## Step 5: Watershed Segmentation
 
-Key steps include:
-- Local maxima detection: Identify bright intensity peaks within objects as seed points.
-- Distance transform: Compute distance from background to find object centers for seed placement.
-- Marker assignment: Label each seed uniquely to represent different objects.
-- Validation: Ensure seeds are correctly positioned inside objects and not in background regions.
+Watershed treats the image as a topographic surface and "floods" it from the seed points outward, stopping where regions meet. It is the standard approach for separating touching objects.
 
-## 5. Separate objects with watershed
-Watershed segmentation is a technique that treats the image like a topographic surface, where intensity values represent elevation, and “flooding” separates regions into distinct basins. It is especially useful for splitting touching or overlapping objects (e.g., clustered cells) into individual segments, ensuring accurate object boundaries.
+- **Gradient computation:** Generate an edge map to define object boundaries.
+- **Flooding from seeds:** Expand each labelled region until it meets a neighbouring region.
+- **Post-processing:** Merge small fragments or correct obvious over-segmentation.
 
-Key steps include:
-- Gradient computation: Highlight edges and boundaries to define the “terrain.”
-- Marker placement: Use seeds or predefined markers to indicate starting points for flooding.
-- Flooding process: Expand regions outward until they meet, forming clear object boundaries.
-- Post-processing: Refine results by merging small fragments or correcting over-segmentation.
+Output is a labelled image where each object has a unique integer ID — ready for measurement.
 
-Separating objects is a critical step that can produce:
-- Object boundaries: Clear outlines of cells, nuclei, or other structures.
-- Binary masks: Pixel‑level maps separating foreground (objects) from background.
-- Labeled regions: Each object assigned a unique identifier for counting and tracking.
+---
 
-## 6. Refine masks
-Improving raw segmentation masks to better match biological structures. Raw masks often contain noise, holes, or fragmented regions that can distort measurements.
+## Step 6: Refine Masks
 
-Key steps include:
-- Apply morphological operations (e.g., erosion, dilation, hole filling).
-- Remove small specks or merge fragmented regions.
-- Filter objects by expected size or shape ranges.
+Raw watershed output often has rough boundaries or small artefacts. Refinement brings the masks closer to the true object outlines.
 
-## 7. Quality-check
-Assessing whether segmentation results are accurate and biologically meaningful. Ensures that downstream analysis (counts, intensity, tracking) is based on reliable data.
+- Apply morphological operations: erosion, dilation, hole filling as needed.
+- Remove objects below or above expected size thresholds.
+- Filter by shape descriptors (e.g., circularity, aspect ratio) if your objects have a consistent form.
 
-Key steps include:
-- Compare masks against ground truth or expert annotations.
-- Check consistency with biological expectations (e.g., realistic cell counts, fluorescence levels).
-- Flag and correct over‑segmentation or under‑segmentation errors.
+---
+
+## Step 7: Quality Check
+
+Do not skip this step. Errors in segmentation propagate directly into your quantitative results.
+
+- Overlay masks on the raw image and visually inspect a representative sample of fields.
+- Compare object counts and sizes against biological expectations.
+- If ground truth annotations are available, compute standard metrics (precision, recall, F1, Jaccard index).
+- Identify systematic errors: consistent over-segmentation, missed objects in dim regions, boundary artefacts.
+
+If quality is insufficient, return to the step that introduced the problem — do not try to fix upstream errors with downstream filters.
